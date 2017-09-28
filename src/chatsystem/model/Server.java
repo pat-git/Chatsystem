@@ -82,8 +82,8 @@ public class Server {
                     int clientID = inputStreams.indexOf(inputStream);
                     if (inputLine != null && !inputLine.equals("")) {
                         if (!inputLine.equals("#Close connection#")) {
-                            network.appendMessage("Client " + clientID + ": "
-                                                  + inputLine);
+                            network.appendMessage("Client " + (clientID + 1)
+                                                  + ": " + inputLine);
                             sendMessageToAllClients(inputLine, clientID);
                         } else {
                             removeClient(inputStream, clientID);
@@ -112,7 +112,7 @@ public class Server {
                                            int clientID) {
         inputStreams.remove(inputStream);
         outputStreams.remove(outputStreams.get(clientID));
-        network.appendMessage("Client " + clientID + " disconnected");
+        network.appendMessage("Client " + (clientID + 1) + " disconnected");
         receiveMessagesThreads.get(clientID).stop();
         receiveMessagesThreads.remove(receiveMessagesThreads.get(clientID));
     }
@@ -135,7 +135,7 @@ public class Server {
                 if(clientID == -1){
                     out.println("Host: " + message);
                 } else {
-                    out.println("Client " + clientID + ": " + message);
+                    out.println("Client " + (clientID + 1) + ": " + message);
                 }
             }
         }
