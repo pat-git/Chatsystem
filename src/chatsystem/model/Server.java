@@ -55,7 +55,7 @@ public class Server {
      *         throws this exception because this exception can not
      *         be handled by the network
      */
-    public void acceptConnections () throws IOException {
+    public void acceptConnections() throws IOException {
         Socket clientSocket = serverSocket.accept();
         PrintWriter outputStream = new PrintWriter(
                                                  clientSocket.getOutputStream(),
@@ -119,7 +119,8 @@ public class Server {
 
     /**
      * Sends a message to all connected clients. Adds a prefix to the message to
-     * identify the sender.
+     * identify the sender. This method is synchronized to prevent sending more
+     * messages at once to the same client.
      *
      * @param message
      *        the message which should be sent
@@ -127,12 +128,13 @@ public class Server {
      *        the id of the client (=id of the input-stream in the list
      *        input-streams), server has the id {@code -1}
      */
-    public synchronized void sendMessageToAllClients (String message, int clientID) {
+    public synchronized void sendMessageToAllClients(String message,
+                                                     int clientID) {
         for (PrintWriter out : outputStreams) {
             // Don't send to null and don't (re-)send it to the client that sent
             // the message to this server
             if (out != null && outputStreams.indexOf(out) != clientID) {
-                if(clientID == -1){
+                if (clientID == -1) {
                     out.println("Host: " + message);
                 } else {
                     out.println("Client " + (clientID + 1) + ": " + message);
@@ -149,15 +151,15 @@ public class Server {
      *         throws this exception because this exception can not
      *         be handled by the network
      */
-    public void disconnect () throws IOException{
+    public void disconnect() throws IOException{
         sendMessageToAllClients("closing", -1);
-        for(Thread thread : receiveMessagesThreads){
+        for (Thread thread : receiveMessagesThreads) {
             thread.stop();
         }
-        for(PrintWriter output : outputStreams){
+        for (PrintWriter output : outputStreams) {
             output.close();
         }
-        for(BufferedReader input : inputStreams){
+        for (BufferedReader input : inputStreams) {
             input.close();
         }
         serverSocket.close();

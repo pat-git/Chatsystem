@@ -60,8 +60,8 @@ public class Network {
      *         throws this exception because this exception can not
      *         be handled by the network
      */
-    public void acceptConnection () throws IOException {
-        if(isServer) {
+    public void acceptConnection() throws IOException {
+        if (isServer) {
             server.acceptConnections();
         }
     }
@@ -73,7 +73,7 @@ public class Network {
      *        the message to be appended
      */
     public void appendMessage(String message) {
-        if(message != null){
+        if (message != null) {
             chatSystemFrame.appendToTextArea(message);
         }
     }
@@ -95,8 +95,10 @@ public class Network {
     }
 
     /**
-     * Sends the message from the server to the client or rather client to
-     * server.
+     * Sends the message from the server to the clients or rather client to
+     * server. Depends on what the instance of the program is (a server or a
+     * client). This method is synchronized to prevent mixing up to messages by
+     * writing them at the same time in the output stream.
      *
      * @param message
      *        the message to be sent
@@ -108,7 +110,7 @@ public class Network {
         if (isServer) {
             server.sendMessageToAllClients(message, -1);
         } else {
-            client.sendMessage(message);
+            client.sendMessageToServer(message);
         }
     }
 
@@ -120,7 +122,7 @@ public class Network {
      *         be handled by the network
      */
     public void receiveMessage() throws IOException{
-            client.receiveMessage();
+        client.receiveMessage();
     }
 
     /**

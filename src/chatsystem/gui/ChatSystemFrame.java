@@ -100,7 +100,7 @@ public final class ChatSystemFrame extends JFrame {
 
     private void addButtonListener() {
         sendButton.addActionListener(event -> {
-            if(event.getSource() == sendButton){
+            if (event.getSource() == sendButton) {
                 sendMessage(textField.getText());
             }
         });
@@ -108,7 +108,7 @@ public final class ChatSystemFrame extends JFrame {
 
     private void addTextBoxListener() {
         textField.addActionListener(event -> {
-            if(event.getSource() == textField){
+            if (event.getSource() == textField) {
                 sendMessage(textField.getText());
             }
         });
@@ -116,7 +116,7 @@ public final class ChatSystemFrame extends JFrame {
 
     private void setupNetwork () throws IOException {
         network = new Network(this);
-        if(network.isServer()) {
+        if (network.isServer()) {
             networkThread = new Thread(() -> {
                 try {
                     while (true) {

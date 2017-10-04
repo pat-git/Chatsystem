@@ -38,8 +38,10 @@ public class Client {
         this.network = network;
         try {
             clientSocket = new Socket(hostName, port);
-            outputStream = new PrintWriter(clientSocket.getOutputStream(), true);
-            inputStream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            outputStream = new PrintWriter(clientSocket.getOutputStream(),
+                                 true);
+            inputStream = new BufferedReader(
+                          new InputStreamReader(clientSocket.getInputStream()));
 
         } catch (ConnectException ex) {
             return false;
@@ -76,21 +78,21 @@ public class Client {
     }
 
     private void waitForServer() throws IOException{
-        while(!createClient(clientSocket.getInetAddress().getHostName(),
-                clientSocket.getPort(), network)){
+        while (!createClient(clientSocket.getInetAddress().getHostName(),
+               clientSocket.getPort(), network)) {
             // Waiting for successful connection
         }
         network.appendMessage("Reconnected to server!");
     }
 
     /**
-     * Sends a message to the server/client.
+     * Sends a message to the server.
      *
      * @param message
      *        the message that should be sent
      */
-    public void sendMessage (String message) {
-        if(outputStream != null){
+    public void sendMessageToServer(String message) {
+        if (outputStream != null) {
             outputStream.println(message);
         } else {
             System.out.println("No OutputStream!");
@@ -104,8 +106,8 @@ public class Client {
      *         throws this exception because this exception can not
      *         be handled by the network
      */
-    public void disconnect () throws IOException {
-        sendMessage("#Close connection#");
+    public void disconnect() throws IOException {
+        sendMessageToServer("#Close connection#");
         outputStream.close();
         inputStream.close();
         clientSocket.close();
