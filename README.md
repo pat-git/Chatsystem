@@ -1,2 +1,2 @@
 # Chatsystem
-A java chat application
+A very simple chat application implemented in java
